@@ -22,14 +22,17 @@ class Api::RecipesController < ApplicationController
   def create
     @recipe = Recipe.new(
       title: params[:title],
-      chef: params[:chef],
+      user_id: current_user.id,
       ingredients: params[:ingredients],
       directions: params[:directions],
       prep_time: params[:prep_time],
       image_url: params[:image_url]
     )
-    @recipe.save
-    render "show.json.jb"
+    if @recipe.save
+      render "show.json.jb"
+    else
+      render json: {errors: @recipe.errors.full_messages}, status: :unprocessable_entity
+    end
   end
 
   def update
@@ -37,15 +40,15 @@ class Api::RecipesController < ApplicationController
     @recipe = Recipe.find_by(id: params[:id])
     # update attributes using attribute writer(s)
     @recipe.title = params[:title] || @recipe.title
-    @recipe.chef = params[:chef] || @recipe.chef
     @recipe.ingredients = params[:ingredients] || @recipe.ingredients
     @recipe.directions = params[:directions] || @recipe.directions
     @recipe.prep_time = params[:prep_time] || @recipe.prep_time
     @recipe.image_url = params[:image_url] || @recipe.image_url
-    # save recipe
-    @recipe.save
-    # render a view
-    render "show.json.jb"
+    if @recipe.save
+      render "show.json.jb"
+    else
+      render json: {errors: @recipe.errors.full_messages}, status: :unprocessable_entity
+    end
   end
 
   def destroy
