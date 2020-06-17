@@ -17,6 +17,7 @@ class Api::RecipesController < ApplicationController
     # .find method takes in just an id (as opposed to .find_by which takes in a key value pairing)
     @recipe = Recipe.find(params[:id])
     render "show.json.jb"
+    # render "show.html.erb"
   end
 
   def create

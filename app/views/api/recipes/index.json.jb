@@ -6,6 +6,5 @@
     directions: recipe.directions,
     prep_time: recipe.prep_time,
     image_url: recipe.image_url,
-    current_user: current_user
   }
 end
