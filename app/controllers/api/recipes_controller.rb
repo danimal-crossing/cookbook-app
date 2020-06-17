@@ -1,16 +1,12 @@
 class Api::RecipesController < ApplicationController
 
   def index
-    if current_user
-      @recipes = Recipe.all
-      # if params[:title]
-      #   @recipes = Recipe.where("title iLIKE ?", "%#{params[:title]}%")
-      # end
-      # @recipes = @recipes.order(:id)
-      render "index.json.jb"
-    else
-      render json: []
-    end
+    @recipes = Recipe.all
+    # if params[:title]
+    #   @recipes = Recipe.where("title iLIKE ?", "%#{params[:title]}%")
+    # end
+    # @recipes = @recipes.order(:id)
+    render "index.json.jb"
   end
 
   def show
