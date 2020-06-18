@@ -6,3 +6,9 @@
 <h5>Prep Time: <%= @recipe.prep_time %></h5>
 
 <a href="/recipes/<%= @recipe.id %>/edit">Edit</a>
+<a href="/recipes/<%= @recipe.id %>" data-method="delete">Delete</a>
+
+<form action="/recipes/<%= @recipe.id %>" method="post">
+  <input type="hidden" name="_method" value="delete">
+  <button type="submit">Delete</button>
+</form>
