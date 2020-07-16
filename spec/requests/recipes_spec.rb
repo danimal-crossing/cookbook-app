@@ -81,4 +81,44 @@ RSpec.describe "Recipes", type: :request do
       expect(response).to have_http_status(422)
     end
   end
+  describe "PATCH /recipes/:id" do
+    it "should update a recipe" do
+      user = User.first
+      jwt = JWT.encode(
+        {
+          user_id: user.id, # the data to encode
+        },
+        Rails.application.credentials.fetch(:secret_key_base), # the secret key
+        "HS256" # the encryption algorithm
+      )
+      recipe_id = Recipe.first.id
+      patch "/api/recipes/#{recipe_id}", 
+      params: {
+        title: "New Recipe Title", 
+        prep_time: 30
+      },
+      headers: { "Authorization" => "Bearer #{jwt}"}
+      recipe = JSON.parse(response.body)
+      expect(response).to have_http_status(200)
+      expect(recipe["title"]).to eq("New Recipe Title")
+      expect(recipe["prep_time"]).to eq(30)
+    end
+    it "should return an error status with invalid data" do
+      user = User.first
+      jwt = JWT.encode(
+        {
+          user_id: user.id, # the data to encode
+        },
+        Rails.application.credentials.fetch(:secret_key_base), # the secret key
+        "HS256" # the encryption algorithm
+      )
+      recipe_id = Recipe.first.id
+      patch "/api/recipes/#{recipe_id}",
+      params: {
+        title: ""
+      },
+      headers: { "Authorization" => "Bearer #{jwt}"}
+      expect(response).to have_http_status(422)
+    end
+  end
 end
